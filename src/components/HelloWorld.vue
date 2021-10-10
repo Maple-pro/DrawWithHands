@@ -101,11 +101,6 @@ export default {
           });
 
           // 绘制右手 8 号点路径
-          const permanentCanvasWidth = this.permanentCanvasElement.width;
-          const permanentCanvasHeight = this.permanentCanvasElement.height;
-          const width = this.canvasElement.width;
-          const height = this.canvasElement.height;
-
           if (isRightHand && this.isCtrlPressed) {
             // 与上一帧为同一条线
             flag = true;
@@ -115,8 +110,8 @@ export default {
             }
             const eightLandmark = results.multiHandLandmarks[index][8];
             this.lines[this.lines.length - 1].push({
-              x: eightLandmark.x * width,
-              y: eightLandmark.y * height,
+              x: eightLandmark.x,
+              y: eightLandmark.y,
             });
 
             this.drawPath();
@@ -144,7 +139,9 @@ export default {
         const points = line;
         if (points.length > 1) {
           points.forEach((point, i) => {
-            i === 0 ? this.permanentCtx.moveTo(point.x, point.y) : this.permanentCtx.lineTo(point.x, point.y); 
+            i === 0 
+              ? this.permanentCtx.moveTo(point.x * width, point.y * height)
+              : this.permanentCtx.lineTo(point.x * width, point.y * height); 
           });
           this.permanentCtx.strokeStyle = "blue";
           this.permanentCtx.lineWidth = 5;

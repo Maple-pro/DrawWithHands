@@ -1,6 +1,12 @@
-# hands
+# Draw with hands
 
-> A mediapipe exercise
+> A website where you can draw with your hands.
+> 
+> It is a simple application of MediaPip.
+
+## Usage guide
+
+Press `ctrl` to draw
 
 ## Build Setup
 
