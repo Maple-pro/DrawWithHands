@@ -20,6 +20,7 @@
         <input type="radio" v-model="showHands" value="show">显示手掌
         <input type="radio" v-model="showHands" value="noshow">不显示手掌
       </form>
+      <button v-on:click="help" class="control-btn">Help</button>
       <button v-on:click="clearImage" class="clear-btn control-btn">Clear</button>
       <button v-on:click="exportImage" class="export-btn control-btn">Export</button>
       <div class="notice-text">
@@ -193,6 +194,11 @@ export default {
       this.lines.length = 0;
       this.drawPath();
     },
+    help() {
+      this.$alert('<ol><li>在浏览器中输入 chrome://flags/#unsafely-treat-insecure-origin-as-secure</li><li>定位到的“Insecure origins treated as secure”区域的文本框中输入 http://maples31.com:3000</li><li>将右侧 Disabled 改为 Enabled</li><li>点击下方的 Relaunch</li><li>再次访问</li></ol>', '加载不出摄像头', {
+        dangerouslyUseHTMLString: true
+      });
+    }
   },
   created: function() {
     document.onkeydown = this.onkeydown.bind(this);
