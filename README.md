@@ -33,6 +33,11 @@ docker exec -it [container ID] /bin/bash
 
 find / -name nginx.conf
 
+// 安装 vim
+apt-get update
+
+apt-get install -y vim
+
 # 配置nginx
 server {
     listen 8080;
