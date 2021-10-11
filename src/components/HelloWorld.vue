@@ -22,6 +22,9 @@
       </form>
       <button v-on:click="clearImage" class="clear-btn control-btn">Clear</button>
       <button v-on:click="exportImage" class="export-btn control-btn">Export</button>
+      <div class="notice-text">
+        Press Ctrl to draw.
+      </div>
     </div>
   </div>
 </template>
@@ -233,7 +236,7 @@ export default {
       minTrackingConfidence: 0.5
     })
     .add([
-      new ControlUtils.StaticText({ title: 'MediaPipe Hands' }),
+      new ControlUtils.StaticText({ title: 'Draw With Hands' }),
       this.fpsControl,
       new ControlUtils.Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
       new ControlUtils.SourcePicker({
@@ -401,6 +404,10 @@ export default {
   font-weight: 500;
   font-size: 14px;
   border-radius: 4px;
+}
+
+.control-btns .notice-text {
+  margin-top: 20px;
 }
 
 .loading {
