@@ -14,7 +14,14 @@
         </div>
       </div>
     </div>
-    <div class="control-panel">
+    <div class="control-panel" />
+    <div class="control-btns">
+      <form>
+        <input type="radio" v-model="showHands" value="show">显示手掌
+        <input type="radio" v-model="showHands" value="noshow">不显示手掌
+      </form>
+      <button v-on:click="clearImage" class="clear-btn control-btn">Clear</button>
+      <button v-on:click="exportImage" class="export-btn control-btn">Export</button>
     </div>
   </div>
 </template>
@@ -26,6 +33,7 @@ import * as ControlUtils from '@mediapipe/control_utils';
 import * as DrawingUtils from '@mediapipe/drawing_utils';
 import * as CameraUtils from '@mediapipe/camera_utils';
 import * as HandsUtils from '@mediapipe/hands';
+import download from 'downloadjs';
 
 export default {
   name: 'HelloWorld',
@@ -40,6 +48,9 @@ export default {
       permanentCtx: null,
       lines: [],
       isCtrlPressed: false,
+
+      // control-btns
+      showHands: 'show',
     }
   },
   methods: {
@@ -91,14 +102,21 @@ export default {
           const classification = results.multiHandedness[index];
           const isRightHand = classification.label === 'Right';
           const landmarks = results.multiHandLandmarks[index];
-          DrawingUtils.drawConnectors(this.canvasCtx, landmarks, HandsUtils.HAND_CONNECTIONS, { color: isRightHand ? '#00FF00' : '#FF0000' });
-          DrawingUtils.drawLandmarks(this.canvasCtx, landmarks, {
-            color: isRightHand ? '#00FF00' : '#FF0000',
-            fillColor: isRightHand ? '#FF0000' : '#00FF00',
-            radius: (x) => {
-              return DrawingUtils.lerp(x.from.z, -0.15, .1, 10, 1);
-            }
-          });
+
+          // Draw hands
+          if (this.showHands === 'show') {
+            DrawingUtils.drawConnectors(this.canvasCtx, landmarks, HandsUtils.HAND_CONNECTIONS, {
+              color: isRightHand ?  '#00FF00' : '#FF0000'
+            });
+            DrawingUtils.drawLandmarks(this.canvasCtx, landmarks, {
+              color: isRightHand ? '#00FF00' : '#FF0000',
+              fillColor: isRightHand ? '#FF0000' : '#00FF00',
+              radius: (x) => {
+                return DrawingUtils.lerp(x.from.z, -0.15, .1, 10, 1);
+              }
+            });
+          }
+          
 
           // 绘制右手 8 号点路径
           if (isRightHand && this.isCtrlPressed) {
@@ -161,7 +179,17 @@ export default {
       if (e) {
         this.isCtrlPressed = e.ctrlKey;
       }
-    }
+    },
+    exportImage() {
+      const MIME_TYPE = "image/png";
+      const imgURL = this.permanentCanvasElement.toDataURL(MIME_TYPE);
+
+      download(imgURL, `rawWithHands-${Date.now()}`, MIME_TYPE);
+    },
+    clearImage() {
+      this.lines.length = 0;
+      this.drawPath();
+    },
   },
   created: function() {
     document.onkeydown = this.onkeydown.bind(this);
@@ -349,6 +377,30 @@ export default {
   position: absolute;
   left: 10px;
   top: 10px;
+}
+
+.control-btns {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.control-btns .control-btn {
+  display: inline-block;
+  width: 80%;
+  height: 30px;
+  margin-top: 20px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 4px;
 }
 
 .loading {
