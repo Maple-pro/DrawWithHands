@@ -228,7 +228,7 @@ export default {
 
     const hands = new HandsUtils.Hands({
       locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.3/${file}`;
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${file}`;
       }
     });
     hands.onResults(this.onResults);
@@ -238,6 +238,7 @@ export default {
     new ControlUtils.ControlPanel(this.controlsElement, {
       selfieMode: true,
       maxNumHands: 2,
+      modelComplexity: 1,
       minDetectionConfidence: 0.5,
       minTrackingConfidence: 0.5
     })

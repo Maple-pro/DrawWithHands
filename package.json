@@ -13,7 +13,7 @@
     "@mediapipe/camera_utils": "^0.3.1632432234",
     "@mediapipe/control_utils": "^0.6.1629159505",
     "@mediapipe/drawing_utils": "^0.3.1620248257",
-    "@mediapipe/hands": "^0.3.1632795355",
+    "@mediapipe/hands": "^0.4.1646424915",
     "device-detector-js": "^2.2.10",
     "downloadjs": "^1.4.7",
     "element-ui": "^2.15.6",
